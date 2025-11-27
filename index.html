@@ -51,6 +51,7 @@
             </svg>
         );
 
+        // --- 擴充圖示集 (包含新加的 Award, BookOpen, Users 等) ---
         const Icons = {
             Youtube: (p) => <Icon d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z M9.75 15.02l5.75-3.27-5.75-3.27z" {...p} />,
             Instagram: (p) => <Icon d={["M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z", "M17.5 6.5h.01", "M16 2H8a4 4 0 0 0-4 4v8a4 4 0 0 0 4 4h8a4 4 0 0 0 4-4V6a4 4 0 0 0-4-4z"]} {...p} />,
@@ -74,7 +75,13 @@
             MousePointerClick: (p) => <Icon d={["M14 4.1 12 6", "M5.1 8l-2.9-.8", "M6 12l-1.9 2", "M7.2 2.2 8 5.1", "M9.037 9.69a.498.498 0 0 1 .653-.653l11 4.5a.5.5 0 0 1-.074.949l-4.349 1.041a.5.5 0 0 0-.34.34l-1.041 4.349a.5.5 0 0 1-.949.075l-4.5-11a.5.5 0 0 1-.4-.4z"]} {...p} />,
             TrendingUp: (p) => <Icon d="M23 6l-9.5 9.5-5-5L1 18" {...p} />,
             Shield: (p) => <Icon d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" {...p} />,
-            HeartHandshake: (p) => <Icon d={["M12 11.5l-3 3-1.5-1.5", "M20.4 4.5 17 8l-3.5-3.5-2 2L15 10l-4 4-2.5-2.5L5 15h0a5 5 0 1 0 1.5 8.5L20.4 9.6a5 5 0 0 0 0-7.1h0z"]} {...p} />
+            HeartHandshake: (p) => <Icon d={["M12 11.5l-3 3-1.5-1.5", "M20.4 4.5 17 8l-3.5-3.5-2 2L15 10l-4 4-2.5-2.5L5 15h0a5 5 0 1 0 1.5 8.5L20.4 9.6a5 5 0 0 0 0-7.1h0z"]} {...p} />,
+            // 新增的圖示
+            Award: (p) => <Icon d={["M12 15c-3.31 0-6-2.69-6-6 0-1.5.5-2.9 1.35-4H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-.35c.85 1.1 1.35 2.5 1.35 4 0 3.31-2.69 6-6 6z", "M12 15l-2 6 2-2 2 2-2-6"]} {...p} />,
+            BookOpen: (p) => <Icon d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2zM22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" {...p} />,
+            Users: (p) => <Icon d={["M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2", "M16 3.13a4 4 0 0 1 0 7.75", "M23 21v-2a4 4 0 0 0-3-3.87", "M16 3.13a4 4 0 0 1 0 7.75"]} {...p} />,
+            Target: (p) => <Icon d={["M22 12h-4", "M6 12H2", "M12 6V2", "M12 22v-4", "M12 12a3 3 0 1 0 0-6 3 3 0 0 0 0 6z", "M12 12a9 9 0 1 0 0-18 9 9 0 0 0 0 18z", "M12 12a6 6 0 1 0 0-12 6 6 0 0 0 0 12z"]} {...p} />,
+            Lightbulb: (p) => <Icon d={["M15 14c.2-1 .7-1.7 1.5-2.5 1-1 .9-2.6-.2-3.5a2.49 2.49 0 0 0-3.5 0c-1 1-1.1 2.6-.2 3.5.8.8 1.3 1.5 1.5 2.5", "M9 18h6", "M10 22h4"]} {...p} />
         };
 
         const App = () => {
@@ -107,43 +114,47 @@
           const navLinks = [
             { name: '關於小歐', href: '#about' },
             { name: '核心哲學', href: '#philosophy' },
-            { name: '能量主題', href: '#topics' },
+            { name: '服務價值', href: '#value' }, 
             { name: '實戰案例', href: '#cases' }, 
             { name: '服務方案', href: '#services' }, 
             { name: '學員見證', href: '#testimonials' }, 
-            { name: '紫靈牌占卜', href: 'https://aurorakrystal.github.io/tarot/' }, 
           ];
 
-          const topics = [
+          // Stats Data
+          const stats = [
+            { number: "Ph.D.", label: "醫學工程博士", icon: <Icons.Award size={24} className="text-purple-600" /> },
+            { number: "10+", label: "年腦科學研究", icon: <Icons.BookOpen size={24} className="text-indigo-600" /> },
+            { number: "1000+", label: "諮詢個案經驗", icon: <Icons.Users size={24} className="text-pink-600" /> },
+          ];
+
+          // Value/How I Help Data
+          const valueProps = [
             {
-              title: '紫微斗數命盤解析',
-              subtitle: '人生原始碼',
-              description: '解析你的人生說明書，找出潛在優勢與卡點。',
-              icon: <Icons.Star className="w-8 h-8 text-white" />,
-              bg: "bg-gradient-to-r from-purple-600 to-indigo-700",
-              size: "md:col-span-2",
-              textColor: "text-white",
-              height: "min-h-[240px]"
+              title: '人生導航與自我認知',
+              method: '紫微斗數命盤解析',
+              timeframe: '諮詢當下即刻釐清',
+              description: '這不是迷信，而是你的人生大數據。我幫助你解析「原廠設定」，找出天賦優勢與性格盲點，就像拿到一張精確的地圖，不再迷路。',
+              icon: <Icons.Map className="w-8 h-8 text-white" />,
+              bg: "bg-gradient-to-br from-purple-600 to-indigo-700",
+              textColor: "text-white"
             },
             {
-              title: '科學風水與水晶佈局',
-              subtitle: '環境心理學',
-              description: '運用磁場流動原理與礦石頻率，打造最適合大腦運作的空間，物理性穩定自身磁場。',
+              title: '環境能量優化',
+              method: '科學風水與水晶佈局',
+              timeframe: '調整後 1-3 個月見效',
+              description: '環境是外在的大腦。運用環境心理學與礦石頻率，調整空間磁場。當環境對了，大腦運作效率自然提升，焦慮感下降。',
               icon: <Icons.Home className="w-8 h-8 text-indigo-600" />,
               bg: "bg-white",
-              size: "md:col-span-1",
-              textColor: "text-slate-800",
-              height: "min-h-[280px]"
+              textColor: "text-slate-800"
             },
             {
-              title: '潛意識調頻',
-              subtitle: '腦科學',
-              description: '整合腦波調頻。透過音頻引導與信念改寫行為模式。',
+              title: '內在程式重寫',
+              method: '潛意識調頻 (NLP/腦波)',
+              timeframe: '持續練習 3-6 個月',
+              description: '透過腦波調頻與引導，深入潛意識修改那些「我不夠好」、「我不配」的限制性信念。從根源改變行為模式，顯化理想實相。',
               icon: <Icons.Brain className="w-8 h-8 text-white" />,
-              bg: "bg-slate-900", 
-              size: "md:col-span-1",
-              textColor: "text-slate-200",
-              height: "min-h-[280px]"
+              bg: "bg-slate-900",
+              textColor: "text-slate-200"
             }
           ];
 
@@ -152,27 +163,27 @@
               title: "從瀕臨拆夥到 A 輪融資",
               subtitle: "用紫微斗數優化團隊基因",
               icon: <Icons.TrendingUp className="w-8 h-8 text-blue-600" />,
-              problem: "兩位科技新創創辦人理念不合，公司內部決策癱瘓。",
-              solution: "運用命盤數據，分析雙方決策模式與流年運勢。建議重新分配職權：一人主攻產品開發（喜用神運在內），一人主攻市場融資（喜用神運在外）。",
-              result: "內部溝通成本降低 80%，半年內順利完成 A 輪融資。這不是玄學，是最高效的人力資源配置。",
+              problem: "兩位科技新創創辦人理念不合，溝通成本極高，公司內部決策幾乎癱瘓，面臨拆夥危機。",
+              solution: "運用紫微斗數合盤，分析雙方決策模式與流年運勢。建議重新分配職權：一人主攻產品開發，一人主攻市場融資。",
+              result: "內部溝通成本降低 80%，團隊運作效率大幅提升，半年內順利完成 A 輪融資。這不是玄學，是最高效的人力資源配置。",
               tag: "商業決策"
             },
             {
               title: "環境磁場的科學校準",
               subtitle: "並非所有頭痛都能被藥物治癒",
               icon: <Icons.Shield className="w-8 h-8 text-teal-600" />,
-              problem: "SOHO 族客戶長期在家工作，深受失眠與偏頭痛困擾，看醫生找不出原因。",
+              problem: "SOHO 族客戶長期在家工作，深受失眠與偏頭痛困擾，看醫生找不出原因，工作效率低落。",
               solution: "結合環境心理學檢測，發現工作區處於高壓動線沖煞點。重新規劃辦公桌方位，並運用黑曜石佈局穩定磁場。",
-              result: "調整後第一週睡眠深度顯著增加，一個月後偏頭痛頻率大幅下降。身體是最誠實的數據。",
+              result: "調整後第一週睡眠深度顯著增加，一個月後偏頭痛頻率大幅下降，工作專注度提升。身體是最誠實的數據。",
               tag: "居家風水"
             },
             {
               title: "改寫潛意識的感情代碼",
               subtitle: "終結重複發生的『吸渣』體質",
               icon: <Icons.HeartHandshake className="w-8 h-8 text-pink-600" />,
-              problem: "客戶外條件優秀，卻總是在感情中遇到不對的人，陷入相同的受傷迴路。",
-              solution: "我們不談宿命，而是協助你從根本找出創傷、接納創傷，進而改變慣有的行為模式，最終改寫結局。",
-              result: "停止向外索求認同，三個月後吸引到頻率相投的伴侶，現已穩定交往。",
+              problem: "客戶外條件優秀，卻總是在感情中遇到不對的人，陷入相同的受傷迴路，對愛情失去信心。",
+              solution: "根據命盤和客戶反饋，協助客戶從根本找出童年創傷、接納創傷，進而改變慣有的行為模式，植入新的自信迴路。",
+              result: "停止向外索求認同，三個月後吸引到頻率相投的伴侶，現已穩定交往。改變內在頻率，外在實相自然改變。",
               tag: "潛意識重塑"
             }
           ];
@@ -181,27 +192,44 @@
             {
               title: "聚焦解惑｜單一問題諮詢",
               price: "NT$ 1,500",
-              duration: "30 分鐘",
+              duration: "40 分鐘",
               tag: "入門首選",
-              features: ["針對單一事件分析", "流年運勢快速掃描", "3 個具體行動建議", "線上語音通話"],
+              features: [
+                "針對單一事件/卡點精準分析",
+                "本命特質與流年運勢快速掃描",
+                "提供 3 個具體可執行的行動建議",
+                "一對一線上語音通話"
+              ],
               recommended: false,
               color: "border-slate-200"
             },
             {
               title: "全方位人生藍圖｜深度解析",
-              price: "NT$ 3,600",
+              price: "NT$ 6,600",
               duration: "90 分鐘",
               tag: "高價值推薦",
-              features: ["紫微命盤完整解析", "十年大運趨勢規劃", "個人能量場檢測", "專屬改運策略報告", "贈送：客製化冥想音頻"],
+              features: [
+                "紫微命盤完整解析 (事業/財運/感情)",
+                "未來十年大運趨勢規劃與佈局",
+                "個人能量場檢測與調頻建議",
+                "提供專屬改運策略報告",
+                "贈送：客製化潛意識冥想音頻"
+              ],
               recommended: true, 
               color: "border-purple-500 ring-2 ring-purple-500 ring-offset-2"
             },
             {
               title: "私人顧問｜年度陪跑教練",
-              price: "NT$ 12,000",
-              duration: "3 個月",
-              tag: "深層轉化",
-              features: ["每月深度覆盤會議", "LINE 專屬快速通道", "重大決策即時占卜", "居家風水遠端調整", "協助達成年度目標"],
+              price: "NT$ 36,000",
+              duration: "連續 3 個月",
+              tag: "企業主/創業者首選",
+              features: [
+                "每月 1 次深度策略覆盤會議",
+                "LINE 專屬 VVIP 快速通道",
+                "重大商業/人生決策即時占卜",
+                "居家或辦公室風水遠端調整",
+                "協助設定並達成年度目標"
+              ],
               recommended: false,
               color: "border-slate-200"
             }
@@ -259,7 +287,8 @@
               {/* Navigation */}
               <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white/90 backdrop-blur-md shadow-sm py-4' : 'bg-transparent py-6'}`}>
                 <div className="container mx-auto px-6 flex justify-between items-center">
-                  <a href="https://aurorakrystal.github.io/" className="text-2xl font-bold tracking-tighter flex items-center gap-2">
+                  {/* Added Link to Github Page */}
+                  <a href="https://aurorakrystal01.github.io/" className="text-2xl font-bold tracking-tighter flex items-center gap-2">
                     <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-indigo-500 font-serif">
                       Aurora Krystal
                     </span>
@@ -272,7 +301,7 @@
                         {link.name}
                       </a>
                     ))}
-                    <a href="https://aurorakrystal.github.io/" target="_blank" rel="noreferrer" className="px-5 py-2 bg-slate-900 text-white rounded-full font-medium hover:bg-purple-600 transition-all flex items-center gap-2 shadow-lg hover:shadow-purple-200">
+                    <a href="https://aurorakrystal01.github.io/tarot/" target="_blank" rel="noreferrer" className="px-5 py-2 bg-slate-900 text-white rounded-full font-medium hover:bg-purple-600 transition-all flex items-center gap-2 shadow-lg hover:shadow-purple-200">
                       <Icons.Sparkles size={18} /> 紫靈牌占卜
                     </a>
                   </div>
@@ -290,7 +319,7 @@
                         {link.name}
                       </a>
                     ))}
-                    <a href="https://aurorakrystal.github.io/" target="_blank" rel="noreferrer" className="w-full text-center py-3 bg-slate-900 text-white rounded-lg font-medium mt-2">
+                    <a href="https://aurorakrystal01.github.io/tarot/" target="_blank" rel="noreferrer" className="w-full text-center py-3 bg-slate-900 text-white rounded-lg font-medium mt-2">
                       紫靈牌占卜
                     </a>
                   </div>
@@ -317,10 +346,11 @@
                     </span>
                   </h1>
                   
-                  <p className="text-xl text-slate-600 max-w-2xl mx-auto mb-10 leading-relaxed">
-                    你是否常覺得努力卻徒勞無功？這不是你不夠好，而是你的內在程式與宇宙頻率尚未「對齊」。
-                    <br className="hidden md:block" />
-                    這裡不販賣焦慮，只提供科學與靈性的工具，助你找回掌舵權，駛向應許之地。
+                  <p className="text-xl text-slate-600 max-w-2xl mx-auto mb-10 leading-relaxed md:leading-loose">
+                    你是否常覺得努力卻徒勞無功？<br/>
+                    這不是你不夠好，而是你的內在程式與宇宙頻率尚未「對齊」。<br/>
+                    這裡不販賣焦慮，只提供科學與靈性的工具，<br/>
+                    助你找回掌舵權，駛向應許之地。
                   </p>
 
                   <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
@@ -359,7 +389,7 @@
                       <div className="relative">
                         <div className="absolute -top-10 -left-10 w-20 h-20 bg-yellow-100 rounded-full blur-xl"></div>
                         <div className="rounded-3xl overflow-hidden border border-slate-100 relative z-10 shadow-lg">
-                           <ImageWithFallback src="./15052.jpg" alt="航行與導航" className="w-full h-full object-cover min-h-[300px]" fallbackIcon={Icons.Map} />
+                           <ImageWithFallback src="./15052.jpg" alt="航行與導航" className="w-full h-full object-cover min-h-[300px]" />
                         </div>
                       </div>
                     </div>
@@ -387,35 +417,59 @@
               {/* About Section */}
               <section id="about" className="py-24 bg-slate-50">
                 <div className="container mx-auto px-6">
-                  <div className="flex flex-col md:flex-row items-center gap-12 lg:gap-20">
-                    <div className="w-full md:w-1/2 relative group">
-                      <div className="aspect-[4/5] rounded-2xl overflow-hidden bg-slate-200 relative shadow-2xl transition-transform duration-500 group-hover:scale-[1.02]">
-                         <ImageWithFallback src="./S__5873668.jpg" alt="小歐的照片" className="w-full h-full object-cover" fallbackIcon={Icons.User} />
-                         <div className="absolute bottom-6 left-6 right-6 bg-white/80 backdrop-blur-md p-4 rounded-xl border border-white/40 shadow-lg">
-                           <p className="font-bold text-slate-900 font-serif">Aurora Krystal 小歐</p>
-                           <p className="text-xs text-purple-600 font-bold">科學腦的玄學家</p>
-                         </div>
+                  <div className="text-center mb-12">
+                     <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4 font-serif">Hello 👋 關於 Aurora Krystal</h2>
+                  </div>
+                  <div className="flex flex-col lg:flex-row items-start gap-12 lg:gap-20">
+                    
+                    <div className="w-full lg:w-1/3 sticky top-24">
+                      <div className="bg-white p-6 rounded-3xl shadow-xl border border-slate-100">
+                        <div className="aspect-[4/5] rounded-2xl overflow-hidden bg-slate-200 relative mb-6">
+                           <ImageWithFallback src="./S__5873668.jpg" alt="小歐的照片" className="w-full h-full object-cover" fallbackIcon={Icons.User} />
+                        </div>
+                        <div className="text-center">
+                          <h3 className="text-2xl font-bold text-slate-900 font-serif">小歐 (Aurora)</h3>
+                          <p className="text-purple-600 font-medium mb-4">科學腦的玄學家</p>
+                          <div className="flex flex-wrap justify-center gap-2">
+                            <span className="px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-xs font-bold">#醫學工程博士</span>
+                            <span className="px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-xs font-bold">#左腦邏輯右腦靈性</span>
+                            <span className="px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-xs font-bold">#打破宿命論</span>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                    <div className="w-full md:w-1/2">
-                      <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-6 font-serif">科學與靈性的完美共振</h2>
-                      <div className="space-y-6 text-slate-600 leading-loose text-xl">
-                        <p>
-                          我是小歐，擁有<strong>台灣醫學工程博士學位</strong>，專攻大腦訊號處理 (EEG)。在本業醫療器材研發的嚴謹訓練下，我習慣用數據與邏輯來解析世界。許多人問我，為什麼博士要算命？因為我發現，從微觀的腦波訊號到宏觀的紫微命盤，兩者殊途同歸，都是能量的展現。我也曾是那個在體制內迷航的社畜，為了擺脫焦慮，我瘋狂跨界、什麼都學。但在無數個朝九晚五的輪迴中，我才驚覺：如果內在頻率沒有對齊，再多的盲目努力都只是原地打轉的空殼。
-                        </p>
-                        <p>
-                          以前算命的和我爸媽說我念書沒用，能去做鐵工廠就好，中年小心妻離子散、傾家蕩產。這些恐嚇的話語，反而激起了我不服輸的鬥志。我不信宿命。我拼命掙扎、修飾性情、改變行為。在家族幾乎無人擁有高學歷的背景下，我用毅力拿到了博士學位，狠狠打臉了當初的預言。所以我創立這個頻道，希望能用我的經驗幫助同樣迷茫的你。我將以科學的思維，為你拆解命運的黑盒子，讓你不再被算命術語的恐懼綁架，而是理智地改寫自己的人生劇本。
-                        </p>
+
+                    <div className="w-full lg:w-2/3">
+                      <div className="grid grid-cols-3 gap-4 mb-12">
+                        {stats.map((stat, index) => (
+                          <div key={index} className="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 text-center hover:shadow-md transition-shadow">
+                            <div className="flex justify-center mb-2">{stat.icon}</div>
+                            <div className="text-2xl md:text-3xl font-bold text-slate-900">{stat.number}</div>
+                            <div className="text-xs md:text-sm text-slate-500">{stat.label}</div>
+                          </div>
+                        ))}
                       </div>
-                      
-                      <div className="mt-8 flex gap-4">
-                        <div className="px-6 py-4 bg-white rounded-xl shadow-sm border border-slate-100">
-                          <span className="block text-2xl font-bold text-purple-600">Ph.D.</span>
-                          <span className="text-xs text-slate-500 font-bold uppercase">醫學工程博士</span>
+
+                      <div className="space-y-8 text-slate-600 leading-loose text-lg">
+                        <div>
+                          <h4 className="text-xl font-bold text-slate-900 mb-3 flex items-center gap-2 font-serif">
+                            <Icons.Target className="text-purple-600" size={20} /> 我的背景
+                          </h4>
+                          <p>
+                            我是小歐，擁有<strong>台灣醫學工程博士學位</strong>，專攻大腦訊號處理 (EEG)。在本業醫療器材研發的嚴謹訓練下，我習慣用數據與邏輯來解析世界。許多人問我，為什麼博士要算命？因為我發現，從微觀的腦波訊號到宏觀的紫微命盤，兩者殊途同歸，都是能量的展現。我也曾是那個在體制內迷航的社畜，為了擺脫焦慮，我瘋狂跨界、什麼都學。但在無數個朝九晚五的輪迴中，我才驚覺：如果內在頻率沒有對齊，再多的盲目努力都只是原地打轉的空殼。
+                          </p>
                         </div>
-                        <div className="px-6 py-4 bg-white rounded-xl shadow-sm border border-slate-100">
-                          <span className="block text-2xl font-bold text-indigo-600">EEG</span>
-                          <span className="text-xs text-slate-500 font-bold uppercase">腦科學專業</span>
+                        
+                        <div>
+                          <h4 className="text-xl font-bold text-slate-900 mb-3 flex items-center gap-2 font-serif">
+                            <Icons.Heart className="text-purple-600" size={20} fill="currentColor" /> 我的初衷
+                          </h4>
+                          <p>
+                            其實，我也是一個普通人，一步步成長上來，你們的苦我都吃過。以前算命的和我爸媽說我念書沒用，能去做鐵工廠就好，中年小心妻離子散、傾家蕩產。除了事業被看衰，我的感情之路也曾跌跌撞撞，不斷碰壁，總是遇到不適合的人互相折磨。但這些恐嚇與挫折，反而激起了我不服輸的鬥志。我不信宿命。我拼命掙扎、修飾性情、改變行為。
+                          </p>
+                          <p className="mt-4">
+                            在家族幾乎無人擁有高學歷、無權無勢的背景下，指導教授也是動用人脈刁難用盡手段不讓畢業，當時的我也30幾歲了，沒有工作沒有收入，一事無成，妻女離我而去，在幾乎不可能、沒人看好的情況下，我以意志力和方法逆風翻盤，也狠狠打臉了當初不看好我的預言，同時也開啟了下一階段的人生。因此，創立這個頻道，希望能用我的曾經不美好的經歷、採坑的經驗，幫助同樣迷茫的你/妳。我將以科學的思維，為你拆解命運的黑盒子，讓你不再被宿命論和恐懼綁架，而是理智地改寫自己的人生劇本。
+                          </p>
                         </div>
                       </div>
                     </div>
@@ -423,37 +477,44 @@
                 </div>
               </section>
 
-              {/* Topics Section */}
-              <section id="topics" className="py-24 bg-white">
+              {/* Value/How I Help Section */}
+              <section id="value" className="py-24 bg-white">
                 <div className="container mx-auto px-6">
                   <div className="text-center max-w-2xl mx-auto mb-16">
-                    <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4 font-serif">探索三大能量模組</h2>
-                    <p className="text-slate-600">這是一套完整的身心靈升級系統，選擇你需要的模組，開始優化你的人生程式。</p>
+                    <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4 font-serif">我能怎麼幫到你？</h2>
+                    <p className="text-slate-600">這是一套結合腦科學與玄學的身心靈升級系統，協助你找回自信與方向。</p>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {topics.map((topic, index) => (
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    {valueProps.map((item, index) => (
                       <div 
                         key={index} 
-                        className={`group relative p-8 rounded-3xl overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 ${topic.bg} ${topic.size} flex flex-col justify-between border border-slate-100/10 ${topic.height}`}
+                        className={`group relative p-8 rounded-3xl overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 ${item.bg} flex flex-col border border-slate-100/10`}
                       >
-                        {topic.textColor === "text-white" && (
+                        {item.textColor === "text-white" && (
                           <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none"></div>
                         )}
 
-                        <div className="flex justify-between items-start z-10">
-                          <div className={`p-3 rounded-2xl ${topic.textColor === 'text-white' ? 'bg-white/20' : 'bg-slate-100'}`}>
-                            {topic.icon}
+                        <div className="flex items-center gap-4 mb-6 z-10">
+                          <div className={`p-3 rounded-2xl ${item.textColor === 'text-white' ? 'bg-white/20' : 'bg-slate-100'}`}>
+                            {item.icon}
                           </div>
-                          <Icons.ArrowRight className={`opacity-0 group-hover:opacity-100 transition-opacity ${topic.textColor}`} />
+                          <div>
+                            <h3 className={`text-xl font-bold ${item.textColor} font-serif`}>{item.title}</h3>
+                            <span className={`text-xs font-bold uppercase tracking-wider opacity-80 ${item.textColor}`}>{item.method}</span>
+                          </div>
                         </div>
 
-                        <div className="z-10 mt-4">
-                          <span className={`text-xs font-bold uppercase tracking-wider opacity-70 ${topic.textColor}`}>{topic.subtitle}</span>
-                          <h3 className={`text-2xl font-bold mb-2 ${topic.textColor} font-serif`}>{topic.title}</h3>
-                          <p className={`text-sm opacity-90 leading-relaxed ${topic.textColor}`}>
-                            {topic.description}
+                        <div className="z-10 flex-grow">
+                          <p className={`text-sm opacity-90 leading-relaxed mb-6 ${item.textColor}`}>
+                            {item.description}
                           </p>
+                        </div>
+
+                        <div className={`z-10 mt-auto pt-4 border-t ${item.textColor === 'text-white' ? 'border-white/20' : 'border-slate-200'}`}>
+                           <div className={`flex items-center gap-2 text-xs font-bold ${item.textColor}`}>
+                              <Icons.Clock size={14} /> {item.timeframe}
+                           </div>
                         </div>
                       </div>
                     ))}
@@ -465,35 +526,43 @@
               <section id="cases" className="py-24 bg-slate-50">
                 <div className="container mx-auto px-6">
                   <div className="text-center max-w-2xl mx-auto mb-16">
-                    <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4 font-serif">實戰案例解析</h2>
-                    <p className="text-slate-600">數據會說話，改變看得見。看看我們如何用科學方法解決真實人生難題。</p>
+                    <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4 font-serif">我幫助了客戶改變</h2>
+                    <p className="text-slate-600">每一個案例，都是一次生命的重啟。看看他們如何改寫劇本。</p>
                   </div>
 
                   <div className="grid md:grid-cols-3 gap-8">
                     {cases.map((item, index) => (
-                      <div key={index} className="bg-white rounded-3xl p-8 shadow-md hover:shadow-xl transition-shadow duration-300 border border-slate-100">
-                        <div className="bg-slate-50 w-16 h-16 rounded-2xl flex items-center justify-center mb-6">
-                          {item.icon}
-                        </div>
-                        <div className="mb-4">
-                          <span className="text-xs font-bold text-purple-600 bg-purple-50 px-3 py-1 rounded-full">{item.tag}</span>
-                        </div>
-                        <h3 className="text-xl font-bold text-slate-900 mb-1 font-serif">{item.title}</h3>
-                        <p className="text-sm text-slate-500 mb-6 font-medium">{item.subtitle}</p>
-                        
-                        <div className="space-y-4">
+                      <div key={index} className="bg-white rounded-3xl p-8 shadow-md hover:shadow-xl transition-shadow duration-300 border border-slate-100 flex flex-col h-full">
+                        <div className="flex items-center gap-3 mb-6">
+                          <div className="bg-slate-50 w-12 h-12 rounded-xl flex items-center justify-center text-purple-600">
+                            {item.icon}
+                          </div>
                           <div>
-                            <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Problem</p>
+                            <h3 className="font-bold text-slate-900 font-serif">{item.title}</h3>
+                            <span className="text-xs text-purple-600 bg-purple-50 px-2 py-0.5 rounded-full">{item.tag}</span>
+                          </div>
+                        </div>
+                        
+                        <div className="space-y-6 flex-grow">
+                          <div className="bg-slate-50 p-4 rounded-2xl">
+                            <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">背景故事</p>
                             <p className="text-slate-700 text-sm leading-relaxed">{item.problem}</p>
                           </div>
-                          <div className="w-full h-px bg-slate-100"></div>
-                          <div>
-                            <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Solution</p>
-                            <p className="text-slate-700 text-sm leading-relaxed">{item.solution}</p>
+                          
+                          <div className="relative flex justify-center"><div className="w-0.5 h-4 bg-slate-200"></div></div>
+
+                          <div className="bg-purple-50 p-4 rounded-2xl border border-purple-100">
+                            <p className="text-xs font-bold text-purple-600 uppercase tracking-wider mb-2 flex items-center gap-1">
+                              <Icons.Lightbulb size={12} /> 運用策略
+                            </p>
+                            <p className="text-purple-800 text-sm font-medium leading-relaxed">{item.solution}</p>
                           </div>
-                          <div className="bg-green-50 p-4 rounded-xl border border-green-100">
-                            <p className="text-xs font-bold text-green-600 uppercase tracking-wider mb-1 flex items-center gap-1">
-                              <Icons.CheckCircle size={12} /> Result
+
+                          <div className="relative flex justify-center"><div className="w-0.5 h-4 bg-slate-200"></div></div>
+
+                          <div className="bg-green-50 p-4 rounded-2xl border border-green-100">
+                            <p className="text-xs font-bold text-green-600 uppercase tracking-wider mb-2 flex items-center gap-1">
+                              <Icons.CheckCircle size={12} /> 成果與改變
                             </p>
                             <p className="text-green-800 text-sm font-medium leading-relaxed">{item.result}</p>
                           </div>
