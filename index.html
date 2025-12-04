@@ -35,6 +35,15 @@
 </head>
 <body class="bg-slate-50">
     
+    <div id="error-display" style="display:none; padding: 20px; background: #fee; color: #c00; border: 1px solid #c00; margin: 20px;"></div>
+    <script>
+        window.onerror = function(msg, url, line, col, error) {
+            var display = document.getElementById('error-display');
+            display.style.display = 'block';
+            display.innerHTML = "<strong>網頁發生錯誤：</strong><br>" + msg + "<br>Line: " + line;
+        };
+    </script>
+
     <div id="root"></div>
 
     <script type="text/babel">
@@ -47,7 +56,7 @@
             </svg>
         );
 
-        // --- 完整圖示集 (包含所有新舊圖示 + Smile) ---
+        // --- 完整圖示集 (已包含 ShoppingBag, Tag 等) ---
         const Icons = {
             Youtube: (p) => <Icon d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z M9.75 15.02l5.75-3.27-5.75-3.27z" {...p} />,
             Instagram: (p) => <Icon d={["M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z", "M17.5 6.5h.01", "M16 2H8a4 4 0 0 0-4 4v8a4 4 0 0 0 4 4h8a4 4 0 0 0 4-4V6a4 4 0 0 0-4-4z"]} {...p} />,
@@ -83,13 +92,17 @@
             Smile: (p) => <Icon d={["M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z", "M8 14s1.5 2 4 2 4-2 4-2", "M9 9h.01", "M15 9h.01"]} {...p} />,
             GraduationCap: (p) => <Icon d={["M22 10v6M2 10l10-5 10 5-10 5z", "M6 12v5c3.33 2 6.67 2 10 0v-5"]} {...p} />,
             Video: (p) => <Icon d={["M23 7l-7 5 7 5V7z", "M14 5H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2z"]} {...p} />,
-            ArrowUpRight: (p) => <Icon d="M7 17l9.2-9.2M17 17V7H7" {...p} />
+            ArrowUpRight: (p) => <Icon d="M7 17l9.2-9.2M17 17V7H7" {...p} />,
+            ShoppingBag: (p) => <Icon d={["M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z", "M3 6h18", "M16 10a4 4 0 0 1-8 0"]} {...p} />,
+            Tag: (p) => <Icon d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82zM7 7h.01" {...p} />,
+            Activity: (p) => <Icon d="M22 12h-4l-3 9L9 3l-3 9H2" {...p} />
         };
 
         const App = () => {
           const [isMenuOpen, setIsMenuOpen] = useState(false);
           const [scrolled, setScrolled] = useState(false);
           const [dailyTip, setDailyTip] = useState(null);
+          const [isAnimating, setIsAnimating] = useState(false);
 
           useEffect(() => {
             const handleScroll = () => {
@@ -102,43 +115,51 @@
           const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
           const generateDailyTip = () => {
+            setIsAnimating(true);
             const tips = [
-              "今日關鍵字：『靜心』。大腦雜訊過多時，靈感進不來。",
-              "轉念練習：將『我做不到』替換為『我還在學習怎麼做』。",
-              "能量提醒：今天的幸運色是紫色，試著配戴紫水晶提升頻率。",
-              "紫微觀點：遇到阻礙不代表路錯了，可能只是現在是『雨天』，適合讀書而非趕路。",
-              "顯化法則：宇宙只會回應你『相信』的，而不是你『想要』的。"
+              "今日提醒：覺得煩的時候，先去睡覺，大腦當機是跑不動程式的。",
+              "轉念一下：與其抱怨『為什麼是我』，不如想『這關要教我什麼』。",
+              "能量小撇步：今天穿點紫色的，或者摸摸紫水晶，直覺會準很多。",
+              "紫微觀點：現在卡住不代表你爛，可能只是剛好走到『整修期』，休息一下死不了。",
+              "顯化法則：宇宙聽不懂你的抱怨，它只會給你更多你『專注』的東西。",
+              "科學靈性：焦慮是大腦的保護機制，不是你的敵人。跟它說聲『謝謝提醒』，然後繼續做事。",
+              "今日行動：把一件拖延很久的小事做完，你會發現能量瞬間回流。",
+              "人際斷捨離：那些讓你感到耗能的關係，其實是你內在頻率不對齊的警訊。",
+              "財運提醒：錢喜歡流動且快樂的能量。今天試著開心地花一筆小錢犒賞自己。",
+              "自我對話：你不需要變得很完美才值得被愛，你現在就很好了。",
+              "突破盲點：有時候『放棄』不是失敗，而是為了騰出手來接住更好的禮物。",
+              "直覺訓練：今天試著用直覺選午餐，不要用大腦分析CP值，練習聽從身體的聲音。"
             ];
-            const randomTip = tips[Math.floor(Math.random() * tips.length)];
-            setDailyTip(randomTip);
+            
+            setTimeout(() => {
+                const randomTip = tips[Math.floor(Math.random() * tips.length)];
+                setDailyTip(randomTip);
+                setIsAnimating(false);
+            }, 300);
           };
 
           const navLinks = [
             { name: '關於小歐', href: '#about' },
-            { name: '核心哲學', href: '#philosophy' },
-            { name: '服務價值', href: '#value' }, 
-            { name: '實戰案例', href: '#cases' }, 
-            { name: '服務方案', href: '#services' }, 
+            { name: '諮詢方案', href: '#services' }, 
             { name: '線上課程', href: '#courses' }, 
+            { name: '開運商店', href: '#shop' }, 
             { name: '學員見證', href: '#testimonials' }, 
           ];
 
-          // Stats Data
           const stats = [
             { number: "Ph.D.", label: "醫學工程博士", icon: <Icons.Award size={24} className="text-purple-600" /> },
             { number: "10+", label: "年腦科學研究", icon: <Icons.BookOpen size={24} className="text-indigo-600" /> },
             { number: "1000+", label: "諮詢個案經驗", icon: <Icons.Users size={24} className="text-pink-600" /> },
           ];
 
-          // Value/How I Help Data
           const valueProps = [
             {
-              title: '人生導航與自我認知',
+              title: '搞懂你的人生說明書',
               method: '紫微斗數命盤解析',
-              timeframe: '諮詢當下即刻釐清',
+              timeframe: '諮詢當下立刻清醒',
               description: (
                 <span>
-                  不再被迷惘消耗。這不是迷信，而是你的人生大數據。我為你解析<strong>「原廠設定」</strong>，精準定位天賦優勢與盲點。就像拿到一張精確的<strong>高解析度地圖</strong>，讓你不再迷路，篤定前行。
+                  別再拿自己的短板去撞別人的長處！這不是迷信，是看懂你的<strong>「原廠設定」</strong>。知道自己適合衝還是適合守，才不會努力錯方向，白忙一場。
                 </span>
               ),
               icon: <Icons.Map className="w-8 h-8 text-white" />,
@@ -147,12 +168,12 @@
               borderColor: "border-purple-400/30"
             },
             {
-              title: '環境能量優化',
+              title: '把家變成招財聚寶盆',
               method: '科學風水與水晶佈局',
-              timeframe: '調整後 1-3 個月見效',
+              timeframe: '調整後 1-3 個月有感',
               description: (
                 <span>
-                  環境是你<strong>延伸的大腦</strong>。運用環境心理學與礦石頻率，科學化校準空間磁場。當環境對了，焦慮感自然下降，大腦運作效率提升，讓家成為你最強的<strong>能量充電站</strong>。
+                  家裡磁場不對，你在外面拚死拚活也存不到錢。用科學角度調整環境，不用敲牆打洞，只要擺對東西，就能讓家裡變成你的<strong>能量充電站</strong>，睡得好自然運氣好。
                 </span>
               ),
               icon: <Icons.Home className="w-8 h-8 text-indigo-600" />,
@@ -161,12 +182,12 @@
               borderColor: "border-indigo-100"
             },
             {
-              title: '內在程式重寫',
+              title: '大腦系統重灌',
               method: '潛意識調頻 (NLP/腦波)',
               timeframe: '持續練習 3-6 個月',
               description: (
                 <span>
-                  為何知道卻做不到？因為程式碼寫錯了。透過腦波調頻，深入潛意識拔除<strong>「我不夠好」</strong>的病毒信念。從根源<strong>改寫大腦迴路</strong>，打破慣性，讓你自然而然顯化出理想的實相版本。
+                  為什麼總是遇到渣男？為什麼賺到錢就留不住？因為你的大腦內建了「我不配」的病毒程式。我們直接從潛意識<strong>改寫代碼</strong>，把那些自我懷疑的Bug修掉。
                 </span>
               ),
               icon: <Icons.Brain className="w-8 h-8 text-white" />,
@@ -178,149 +199,182 @@
 
           const cases = [
             {
-              title: "從瀕臨拆夥到 A 輪融資",
-              subtitle: "用紫微斗數優化團隊基因",
+              title: "吵到快拆夥到順利融資",
+              subtitle: "用紫微看懂合夥人怎麼用",
               icon: <Icons.TrendingUp className="w-8 h-8 text-blue-600" />,
-              problem: "兩位科技新創創辦人理念不合，溝通成本極高，公司內部決策幾乎癱瘓，面臨拆夥危機。",
-              solution: "運用紫微斗數合盤，分析雙方決策模式與流年運勢。建議重新分配職權：一人主攻產品開發，一人主攻市場融資。",
-              result: "內部溝通成本降低 80%，團隊運作效率大幅提升，半年內順利完成 A 輪融資。這不是玄學，是最高效的人力資源配置。",
+              problem: "兩個老闆天天吵架，公司空轉，眼看就要倒閉散夥。",
+              solution: "一看盤才發現，A老闆適合衝業務（在外），B老闆適合盯產品（在內）。以前完全擺錯位置，當然互看不順眼。",
+              result: "調整分工後，溝通順暢了，效率翻倍，半年內直接拿到A輪融資。這就是把對的人放在對的位置。",
               tag: "商業決策"
             },
             {
-              title: "環境磁場的科學校準",
-              subtitle: "並非所有頭痛都能被藥物治癒",
+              title: "莫名偏頭痛與失眠",
+              subtitle: "原來是座位煞氣太重",
               icon: <Icons.Shield className="w-8 h-8 text-teal-600" />,
-              problem: "SOHO 族客戶長期在家工作，深受失眠與偏頭痛困擾，看醫生找不出原因，工作效率低落。",
-              solution: "結合環境心理學檢測，發現工作區處於高壓動線沖煞點。重新規劃辦公桌方位，並運用黑曜石佈局穩定磁場。",
-              result: "調整後第一週睡眠深度顯著增加，一個月後偏頭痛頻率大幅下降，工作專注度提升。身體是最誠實的數據。",
+              problem: "在家接案卻老是生病，頭痛睡不好，看醫生也找不出大毛病，工作效率低到想哭。",
+              solution: "到現場一看，辦公桌剛好在動線沖煞點，人坐在那裡神經隨時緊繃。我們調整了桌子方位，加了黑曜石擋煞。",
+              result: "調整第一週就睡得跟豬一樣香，頭痛頻率大降，接案靈感爆發。身體舒服了，錢才賺得進來。",
               tag: "居家風水"
             },
             {
-              title: "改寫潛意識的感情代碼",
-              subtitle: "終結重複發生的『吸渣』體質",
+              title: "總是愛上不該愛的人",
+              subtitle: "終結『吸渣體質』",
               icon: <Icons.HeartHandshake className="w-8 h-8 text-pink-600" />,
-              problem: "客戶外條件優秀，卻總是在感情中遇到不對的人，陷入相同的受傷迴路，對愛情失去信心。",
-              solution: "根據命盤和客戶反饋，協助客戶從根本找出童年創傷、接納創傷，進而改變慣有的行為模式，植入新的自信迴路。",
-              result: "停止向外索求認同，三個月後吸引到頻率相投的伴侶，現已穩定交往。改變內在頻率，外在實相自然改變。",
+              problem: "外條條件明明很好，卻老是在感情裡當保母、被劈腿，覺得自己這輩子沒救了。",
+              solution: "這不是命不好，是潛意識覺得『我不值得被愛』。我們透過引導，找出童年創傷，把這個爛程式刪除重寫。",
+              result: "不再向外討愛，三個月後遇到一個真正懂珍惜的伴侶。你變了，遇到的人自然就變了。",
               tag: "潛意識重塑"
             }
           ];
 
           const services = [
             {
-              title: "聚焦解惑｜單一問題諮詢",
-              price: "NT$ 1,500",
-              duration: "40 分鐘",
-              tag: "入門首選",
+              title: "紫微卡牌占卜",
+              tag: "選擇困難症專用",
+              description: "當下卡關、二選一不知道怎麼選？用直覺幫你快速掃描盲點。",
+              options: [
+                { name: "💌 文字諮詢 (單一問題)", price: "NT$ 350" },
+                { name: "🎧 語音諮詢 (30分鐘)", price: "NT$ 900" }
+              ],
               features: [
-                "針對單一事件/卡點精準分析",
-                "本命特質與流年運勢快速掃描",
-                "提供 3 個具體可執行的行動建議",
-                "一對一線上語音通話"
+                "快速解決當下糾結",
+                "連結潛意識直覺",
+                "給出明確行動建議"
               ],
               recommended: false,
-              color: "border-slate-200"
+              color: "border-slate-200",
+              icon: <Icons.Sparkles className="text-purple-500 mb-4" size={32} />
             },
             {
-              title: "全方位人生藍圖｜深度解析",
-              price: "NT$ 6,600",
-              duration: "90 分鐘",
-              tag: "高價值推薦",
-              features: [
-                "紫微命盤完整解析 (事業/財運/感情)",
-                "未來十年大運趨勢規劃與佈局",
-                "個人能量場檢測與調頻建議",
-                "提供專屬改運策略報告",
-                "贈送：客製化潛意識冥想音頻"
+              title: "紫微斗數解盤",
+              tag: "人生全面健檢",
+              description: "看懂你這輩子的劇本。事業、財運、感情一次看清，知道何時該衝、何時該縮。",
+              options: [
+                { name: "💌 文字解盤 (單一問題)", price: "NT$ 900" },
+                { name: "🎧 語音解盤 (60分鐘)", price: "NT$ 3,000" }
               ],
-              recommended: true, 
-              color: "border-purple-500 ring-2 ring-purple-500 ring-offset-2"
+              features: [
+                "全方位人生藍圖解析",
+                "未來十年運勢預報",
+                "找出你的天賦優勢"
+              ],
+              recommended: true,
+              color: "border-purple-500 ring-2 ring-purple-500 ring-offset-2",
+              icon: <Icons.Star className="text-indigo-500 mb-4" size={32} />
             },
             {
-              title: "私人顧問｜年度陪跑教練",
-              price: "NT$ 36,000",
-              duration: "連續 3 個月",
-              tag: "企業主/創業者首選",
+              title: "新生兒起名",
+              tag: "送寶寶的第一份禮物",
+              description: "名字會叫一輩子。結合八字與紫微，幫孩子挑一個順風順水的好名字。",
+              options: [
+                { name: "👶 寶寶命名方案", price: "NT$ 8,888" }
+              ],
               features: [
-                "每月 1 次深度策略覆盤會議",
-                "LINE 專屬 VVIP 快速通道",
-                "重大商業/人生決策即時占卜",
-                "居家或辦公室風水遠端調整",
-                "協助設定並達成年度目標"
+                "分析寶寶先天命盤",
+                "避開兇數，補足五行",
+                "提供 3 組精選名字",
+                "名字寓意完整解析"
               ],
               recommended: false,
-              color: "border-slate-200"
+              color: "border-slate-200",
+              icon: <Icons.Smile className="text-pink-500 mb-4" size={32} />
             }
           ];
 
-          // Online Courses Data
+          const products = [
+            {
+              name: "能量水晶",
+              desc: "缺什麼補什麼，幫你穩定磁場。依據妳的命盤提供搭配水晶的建議",
+              price: "依款式報價",
+              icon: <Icons.Gem className="w-10 h-10 text-cyan-400" />
+            },
+            {
+              name: "喜瑪拉雅鹽燈",
+              desc: "淨化空間，讓你睡得安穩。",
+              price: "依大小報價",
+              icon: <Icons.Activity className="w-10 h-10 text-orange-400" />
+            },
+            {
+              name: "開運銅葫蘆",
+              desc: "化解煞氣，鎮宅保平安必備。",
+              price: "詢價",
+              icon: <Icons.Shield className="w-10 h-10 text-yellow-500" />
+            },
+            {
+              name: "紫微牌卡",
+              desc: "自己也能跟潛意識對話。",
+              price: "詢價",
+              icon: <Icons.Sparkles className="w-10 h-10 text-purple-400" />
+            }
+          ];
+
           const courses = [
             {
-              title: "紫微斗數全方位實戰班",
+              title: "紫微斗數實戰班",
               price: "NT$ 12,888",
-              description: "從零基礎到能獨立解盤。不背口訣，用邏輯理解星曜，掌握自己的人生說明書。",
-              icon: <Icons.Star size={24} className="text-yellow-300" />
+              description: "從零教到會解盤。不用死背口訣，用邏輯看懂星星，自己掌握人生說明書。",
+              icon: <Icons.Star className="w-6 h-6 text-yellow-300" />
             },
             {
-              title: "科學風水環境佈局班",
+              title: "科學風水佈局班",
               price: "NT$ 9,888",
-              description: "結合環境心理學與巒頭理氣。教你如何運用現有格局，打造旺財旺丁的能量磁場。",
-              icon: <Icons.Compass size={24} className="text-teal-300" />
+              description: "教你看不見的環境心理學。調整家裡擺設，打造旺財又旺丁的好磁場。",
+              icon: <Icons.Compass className="w-6 h-6 text-teal-300" />
             },
             {
-              title: "姓名學與能量鑑定班",
+              title: "姓名學與能量鑑定",
               price: "NT$ 8,888",
-              description: "名字是隨身攜帶的咒語。解析文字頻率與五行生剋，為自己與孩子挑選加分好名。",
-              icon: <Icons.Target size={24} className="text-pink-300" />
+              description: "名字是隨身咒語。學會解析文字頻率，自己幫自己和孩子挑加分好名。",
+              icon: <Icons.Target className="w-6 h-6 text-pink-300" />
             },
             {
-              title: "紫微牌卡直覺占卜班",
+              title: "紫微牌卡直覺占卜",
               price: "NT$ 6,888",
-              description: "結合紫微底蘊與圖像直覺。無需生辰八字，隨時隨地快速決策，連結潛意識指引。",
-              icon: <Icons.Sparkles size={24} className="text-purple-300" />
+              description: "不用生辰八字，結合圖像直覺。隨時隨地都能快速連結潛意識指引。",
+              icon: <Icons.Sparkles className="w-6 h-6 text-purple-300" />
             },
             {
-              title: "潛意識重塑與情緒管理班",
+              title: "潛意識重塑情緒課",
               price: "NT$ 3,888",
-              description: "告別精神內耗。結合腦科學與冥想，教你識別情緒訊號，重塑潛意識迴路，找回內在的平靜與力量。",
-              icon: <Icons.Smile size={24} className="text-blue-300" />
+              description: "告別精神內耗。結合腦科學，教你識別情緒地雷，重塑大腦迴路，找回平靜。",
+              icon: <Icons.Smile className="w-6 h-6 text-blue-300" />
             },
             {
-              title: "五行能量水晶配置班",
+              title: "五行能量水晶配置",
               price: "NT$ 2,888",
-              description: "結合紫微與八字命盤分析，教你精準挑選並配戴缺少的五行能量（金木水火土），補足先天磁場。",
-              icon: <Icons.Gem size={24} className="text-cyan-300" />
+              description: "看懂紫微八字缺什麼。教你精準挑選適合的水晶，補足先天磁場不足。",
+              icon: <Icons.Gem className="w-6 h-6 text-cyan-300" />
             }
           ];
 
           const testimonials = [
             {
-              text: "原本以為只是算命，結果像是在做大腦升級！小歐用工程師的邏輯解釋運勢，讓我找到了工作的突破口。",
+              text: "原本以為只是算命，結果像是在做大腦升級！小歐講話很實在，沒有那種神神叨叨的感覺，但我工作的盲點真的被點破了。",
               author: "科技業 PM - Mark",
               role: "諮詢項目：全方位人生藍圖"
             },
             {
-              text: "透過腦波調頻，我終於改善了長期的失眠。不講怪力亂神，而是講頻率共振，這讓我很有安全感。",
+              text: "以前失眠很嚴重，現在才知道是頻率問題。跟著做調頻練習，不誇張，我現在睡得超好，焦慮感少很多。",
               author: "資深工程師 - Kevin",
               role: "諮詢項目：潛意識調頻"
             },
             {
-              text: "創業初期很迷茫，紫微分析幫我避開了合夥人的溝通雷坑。這不是算命，這是戰略規劃！",
+              text: "創業初期真的鬼打牆，還好有做紫微分析，避開了一個不適合的合夥人。這不是算命，這是風險控管！",
               author: "新創創辦人 - Jason",
               role: "諮詢項目：商業決策諮詢"
             },
             {
-              text: "家裡動線調整後，長期困擾的偏頭痛真的改善了。環境心理學真的有科學依據，磁場變好很有感。",
+              text: "家裡動線調整後，真的感覺不一樣。以前回家就覺得累，現在家裡感覺很亮、很舒服，偏頭痛也好了。",
               author: "SOHO 接案者 - Linda",
               role: "諮詢項目：居家磁場優化"
             },
             {
-              text: "感情路一直不順，直到小歐解析了我的『夫妻宮』數據，才發現是我潛意識的擇偶迴路出了bug。調整後，現在終於遇到對的人。",
+              text: "感情路一直很坎坷，直到小歐解析我的數據，才發現是我潛意識一直在『求關注』。調整心態後，現在終於遇到對的人。",
               author: "行銷專員 - Emily",
               role: "諮詢項目：感情專項諮詢"
             },
             {
-              text: "一直有冒名頂替症候群，覺得自己不夠好。透過潛意識重塑，我改寫了內在對話。上個月終於鼓起勇氣爭取升遷，成功了！",
+              text: "一直覺得自己不夠好，有冒牌者症候群。上完潛意識課，我學會怎麼改寫內在對話。上個月終於敢開口爭取升遷，成功了！",
               author: "金融分析師 - Alex",
               role: "諮詢項目：潛意識重塑"
             }
@@ -345,9 +399,8 @@
               {/* Navigation */}
               <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white/90 backdrop-blur-md shadow-sm py-4' : 'bg-transparent py-6'}`}>
                 <div className="container mx-auto px-6 flex justify-between items-center">
-                  {/* Added Link to Github Page */}
-                  <a href="https://aurorakrystal01.github.io/" className="text-2xl font-bold tracking-tighter flex items-center gap-2">
-                    <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-indigo-500 font-serif">
+                  <a href="https://aurorakrystal.github.io/" className="text-2xl font-bold tracking-tighter flex items-center gap-2">
+                    <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-indigo-500">
                       Aurora Krystal
                     </span>
                   </a>
@@ -359,7 +412,7 @@
                         {link.name}
                       </a>
                     ))}
-                    <a href="https://aurorakrystal01.github.io/tarot/" target="_blank" rel="noreferrer" className="px-5 py-2 bg-slate-900 text-white rounded-full font-medium hover:bg-purple-600 transition-all flex items-center gap-2 shadow-lg hover:shadow-purple-200">
+                    <a href="https://aurorakrystal.github.io/tarot/" target="_blank" rel="noreferrer" className="px-5 py-2 bg-slate-900 text-white rounded-full font-medium hover:bg-purple-600 transition-all flex items-center gap-2 shadow-lg hover:shadow-purple-200">
                       <Icons.Sparkles size={18} /> 紫靈牌占卜
                     </a>
                   </div>
@@ -377,7 +430,7 @@
                         {link.name}
                       </a>
                     ))}
-                    <a href="https://aurorakrystal01.github.io/tarot/" target="_blank" rel="noreferrer" className="w-full text-center py-3 bg-slate-900 text-white rounded-lg font-medium mt-2">
+                    <a href="https://aurorakrystal.github.io/tarot/" target="_blank" rel="noreferrer" className="w-full text-center py-3 bg-slate-900 text-white rounded-lg font-medium mt-2">
                       紫靈牌占卜
                     </a>
                   </div>
@@ -394,10 +447,10 @@
 
                 <div className="container mx-auto px-6 text-center relative z-10 max-w-4xl">
                   <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/80 border border-purple-100 backdrop-blur-md text-purple-600 text-sm font-bold mb-8 shadow-sm animate-fade-in-up">
-                    <Icons.Sparkles size={14} /> 2025 全新能量升級: 小歐的能量筆記
+                    <Icons.Sparkles size={14} /> 2025 全新能量升級: 小歐的能量筆記 Aurora Krystal
                   </div>
                   
-                  <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-slate-900 mb-8 leading-tight font-serif">
+                  <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-slate-900 mb-8 leading-tight">
                     人生是一場航行，<br/>
                     <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 via-indigo-600 to-pink-500">
                       你需要一套精準的導航系統
@@ -420,19 +473,27 @@
                     </a>
                   </div>
 
-                  {/* Micro-Interaction: Daily Energy Tip */}
-                  <div className="max-w-md mx-auto bg-white/60 backdrop-blur-lg border border-white/50 rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-all cursor-pointer group" onClick={generateDailyTip}>
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-xs font-bold text-purple-500 uppercase tracking-wider flex items-center gap-1">
-                        <Icons.Zap size={12} /> 接收今日宇宙訊號
+                  {/* Micro-Interaction: Daily Energy Tip - ENHANCED */}
+                  <div 
+                    className="max-w-md mx-auto bg-white border-2 border-purple-400 rounded-3xl p-6 shadow-[0_10px_40px_-10px_rgba(147,51,234,0.3)] hover:shadow-[0_20px_50px_-10px_rgba(147,51,234,0.5)] transition-all duration-300 cursor-pointer group relative overflow-hidden" 
+                    onClick={generateDailyTip}
+                  >
+                    <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-purple-400 via-indigo-400 to-purple-400"></div>
+                    
+                    <div className="flex items-center justify-between mb-3 relative z-10">
+                      <span className="text-sm font-bold text-purple-600 uppercase tracking-wider flex items-center gap-2 bg-purple-50 px-3 py-1 rounded-full">
+                        <Icons.Zap size={16} className="fill-current" /> 今日能量指引
                       </span>
-                      <Icons.MousePointerClick size={16} className="text-slate-400 group-hover:text-purple-500 transition-colors" />
+                      <div className="bg-slate-100 p-2 rounded-full group-hover:bg-purple-100 transition-colors">
+                         <Icons.MousePointerClick size={20} className="text-slate-400 group-hover:text-purple-600 transition-colors" />
+                      </div>
                     </div>
-                    <h3 className="text-lg font-medium text-slate-800 min-h-[3rem] flex items-center justify-center text-center">
+                    
+                    <h3 className={`text-lg md:text-xl font-medium text-slate-800 min-h-[4rem] flex items-center justify-center text-center leading-relaxed ${isAnimating ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'} transition-all duration-300`}>
                       {dailyTip ? (
-                        <span className="animate-fadeIn text-purple-700">{dailyTip}</span>
+                        <span className="text-purple-900 font-bold">{dailyTip}</span>
                       ) : (
-                        <span className="text-slate-400 group-hover:text-slate-600 transition-colors">點擊與宇宙連線，下載你的專屬指引...</span>
+                        <span className="text-slate-400 group-hover:text-purple-500 transition-colors font-bold">點我! 接收今日宇宙訊號</span>
                       )}
                     </h3>
                   </div>
@@ -447,13 +508,13 @@
                       <div className="relative">
                         <div className="absolute -top-10 -left-10 w-20 h-20 bg-yellow-100 rounded-full blur-xl"></div>
                         <div className="rounded-3xl overflow-hidden border border-slate-100 relative z-10 shadow-lg">
-                           <ImageWithFallback src="./15052.jpg" alt="航行與導航" className="w-full h-full object-cover min-h-[300px]" fallbackIcon={Icons.Map} />
+                           <ImageWithFallback src="./15052.jpg" alt="航行與導航" className="w-full h-full object-cover min-h-[300px]" />
                         </div>
                       </div>
                     </div>
                     <div className="lg:w-1/2">
                       <span className="text-purple-600 font-bold tracking-wider uppercase text-sm">Our Philosophy</span>
-                      <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mt-2 mb-6 font-serif">
+                      <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mt-2 mb-6">
                         你無法改變天氣，<br/>但你可以決定何時出航。
                       </h2>
                       <p className="text-slate-600 text-lg leading-relaxed mb-6">
@@ -476,17 +537,16 @@
               <section id="about" className="py-24 bg-slate-50">
                 <div className="container mx-auto px-6">
                   <div className="text-center mb-12">
-                     <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4 font-serif">Hello 👋 關於 Aurora Krystal</h2>
+                     <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">Hello 👋 關於 Aurora Krystal</h2>
                   </div>
                   <div className="flex flex-col lg:flex-row items-start gap-12 lg:gap-20">
-                    
                     <div className="w-full lg:w-1/3 sticky top-24">
                       <div className="bg-white p-6 rounded-3xl shadow-xl border border-slate-100">
                         <div className="aspect-[4/5] rounded-2xl overflow-hidden bg-slate-200 relative mb-6">
                            <ImageWithFallback src="./S__5873668.jpg" alt="小歐的照片" className="w-full h-full object-cover" fallbackIcon={Icons.User} />
                         </div>
                         <div className="text-center">
-                          <h3 className="text-2xl font-bold text-slate-900 font-serif">小歐 (Aurora)</h3>
+                          <h3 className="text-2xl font-bold text-slate-900">小歐 (Aurora)</h3>
                           <p className="text-purple-600 font-medium mb-4">科學腦的玄學家</p>
                           <div className="flex flex-wrap justify-center gap-2">
                             <span className="px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-xs font-bold">#醫學工程博士</span>
@@ -508,25 +568,29 @@
                         ))}
                       </div>
 
-                      <div className="space-y-8 text-slate-600 leading-loose text-lg">
+                      <div className="space-y-8 text-slate-600 leading-loose text-xl">
                         <div>
-                          <h4 className="text-xl font-bold text-slate-900 mb-3 flex items-center gap-2 font-serif">
-                            <Icons.Target className="text-purple-600" size={20} /> 我的背景
+                          <h4 className="text-2xl font-bold text-slate-900 mb-3 flex items-center gap-2">
+                            <Icons.Target className="text-purple-600" size={24} /> 我的背景
                           </h4>
                           <p>
-                            我是小歐，擁有<strong>台灣醫學工程博士學位</strong>，專攻大腦訊號處理 (EEG)。在本業醫療器材研發的嚴謹訓練下，我習慣用數據與邏輯來解析世界。許多人問我，為什麼博士要算命？因為我發現，從微觀的腦波訊號到宏觀的紫微命盤，兩者殊途同歸，都是能量的展現。我也曾是那個在體制內迷航的社畜，為了擺脫焦慮，我瘋狂跨界、什麼都學。但在無數個朝九晚五的輪迴中，我才驚覺：如果內在頻率沒有對齊，再多的盲目努力都只是原地打轉的空殼。
+                            我是小歐，擁有<strong>台灣醫學工程博士學位</strong>，專攻大腦訊號處理 (EEG)。在本業醫療器材研發的嚴謹訓練下，我習慣用數據與邏輯來解析世界。
+                          </p>
+                          <p>
+                            許多人問我，為什麼博士要算命？因為我發現，從微觀的腦波訊號到宏觀的紫微命盤，兩者殊途同歸，都是能量的展現。
+                            我也曾是那個在體制內迷航的社畜，為了擺脫焦慮，我瘋狂跨界、什麼都學。但在無數個朝九晚五的輪迴中，我才驚覺：如果內在頻率沒有對齊，再多的盲目努力都只是原地打轉的空殼。
                           </p>
                         </div>
                         
                         <div>
-                          <h4 className="text-xl font-bold text-slate-900 mb-3 flex items-center gap-2 font-serif">
-                            <Icons.Heart className="text-purple-600" size={20} fill="currentColor" /> 我的初衷
+                          <h4 className="text-2xl font-bold text-slate-900 mb-3 flex items-center gap-2">
+                            <Icons.Heart className="text-purple-600" size={24} /> 我的初衷
                           </h4>
                           <p>
-                            其實，我也是一個普通人，一步步成長上來，你們的苦我都吃過。以前算命的和我爸媽說我念書沒用，能去做鐵工廠就好，中年小心妻離子散、傾家蕩產。除了事業被看衰，我的感情之路也曾跌跌撞撞，不斷碰壁，總是遇到不適合的人互相折磨。但這些恐嚇與挫折，反而激起了我不服輸的鬥志。我不信宿命。我拼命掙扎、修飾性情、改變行為。
+                            其實，我也是一個普通人，一步步成長上來，大家的苦我都吃過。以前家境不好，爸媽是做市場生意的普通人，以前算命的和我爸媽說我念書沒用，能去做鐵工廠就好，中年小心妻離子散、傾家蕩產。除了事業被看衰，我的感情之路也曾跌跌撞撞，不斷碰壁，總是遇到不適合的人互相折磨。但這些恐嚇與挫折，反而激起了我不服輸的鬥志。我不信宿命。我拼命掙扎、修飾性情、改變行為。
                           </p>
                           <p className="mt-4">
-                            在家族幾乎無人擁有高學歷、無權無勢的背景下，指導教授也是動用人脈刁難用盡手段不讓畢業，當時的我也30幾歲了，沒有工作沒有收入，一事無成，妻女離我而去，在幾乎不可能、沒人看好的情況下，我以意志力和方法逆風翻盤，也狠狠打臉了當初不看好我的預言，同時也開啟了下一階段的人生。因此，創立這個頻道，希望能用我的曾經不美好的經歷、採坑的經驗，幫助同樣迷茫的你/妳。我將以科學的思維，為你拆解命運的黑盒子，讓你不再被宿命論和恐懼綁架，而是理智地改寫自己的人生劇本。
+                            在家族幾乎無人擁有高學歷、無權無勢的背景下，指導教授也是動用人脈刁難用盡手段不讓畢業，當時的我也30幾歲了，沒有工作沒有收入，當時也應驗了算命說我一事無成，妻女離我而去...在極度絕望下、沒人看好我，我以意志力和方法逆風翻盤，也狠狠打臉了當初不看好我的預言，同時也開啟了下一階段的人生。老實說，創立小歐的能量筆記是我的小心願，希望能用我的曾經不美好的經歷、踩坑的經驗，幫助同樣迷茫的你/妳。我將以科學的思維，為你拆解命運的黑盒子，讓你不再被宿命論和恐懼綁架，而是理智地改寫自己的人生劇本。
                           </p>
                         </div>
                       </div>
@@ -539,7 +603,7 @@
               <section id="value" className="py-24 bg-white">
                 <div className="container mx-auto px-6">
                   <div className="text-center max-w-2xl mx-auto mb-16">
-                    <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4 font-serif">我能怎麼幫到你？</h2>
+                    <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">我能怎麼幫到你？</h2>
                     <p className="text-slate-600">這是一套結合腦科學與玄學的身心靈升級系統，協助你找回自信與方向。</p>
                   </div>
 
@@ -558,7 +622,7 @@
                             {item.icon}
                           </div>
                           <div>
-                            <h3 className={`text-xl font-bold ${item.textColor} font-serif`}>{item.title}</h3>
+                            <h3 className={`text-xl font-bold ${item.textColor}`}>{item.title}</h3>
                             <span className={`text-xs font-bold uppercase tracking-wider opacity-80 ${item.textColor}`}>{item.method}</span>
                           </div>
                         </div>
@@ -570,12 +634,12 @@
                         </div>
 
                         <div className={`z-10 mt-auto pt-4 border-t ${item.textColor === 'text-white' ? 'border-white/20' : 'border-slate-200'}`}>
-                           <div className={`flex items-center gap-2 text-xs font-bold ${item.textColor}`}>
-                              <Icons.Clock size={14} /> {item.timeframe}
+                           <div className={`flex items-center gap-2 text-xs font-bold ${item.textColor} bg-opacity-10 rounded-full py-1 w-fit`}>
+                              <Icons.Clock size={14} className="flex-shrink-0" /> 
+                              <span className="uppercase tracking-wide">效果承諾：{item.timeframe}</span>
                            </div>
                         </div>
                         
-                        {/* Hover Arrow */}
                         <div className={`absolute bottom-6 right-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${item.textColor === 'text-white' ? 'text-white' : 'text-purple-600'}`}>
                           <Icons.ArrowUpRight size={24} />
                         </div>
@@ -589,7 +653,7 @@
               <section id="cases" className="py-24 bg-slate-50">
                 <div className="container mx-auto px-6">
                   <div className="text-center max-w-2xl mx-auto mb-16">
-                    <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4 font-serif">我幫助了客戶改變</h2>
+                    <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">我幫助了客戶改變</h2>
                     <p className="text-slate-600">每一個案例，都是一次生命的重啟。看看他們如何改寫劇本。</p>
                   </div>
 
@@ -601,7 +665,7 @@
                             {item.icon}
                           </div>
                           <div>
-                            <h3 className="font-bold text-slate-900 font-serif">{item.title}</h3>
+                            <h3 className="font-bold text-slate-900">{item.title}</h3>
                             <span className="text-xs text-purple-600 bg-purple-50 px-2 py-0.5 rounded-full">{item.tag}</span>
                           </div>
                         </div>
@@ -640,7 +704,7 @@
               <section id="services" className="py-24 bg-white relative overflow-hidden">
                 <div className="container mx-auto px-6 relative z-10">
                   <div className="text-center max-w-2xl mx-auto mb-16">
-                    <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4 font-serif">選擇你的導航方案</h2>
+                    <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">諮詢方案</h2>
                     <p className="text-slate-600">透明的價格，科學的流程。讓我們的對話，成為你人生的轉捩點。</p>
                   </div>
 
@@ -649,7 +713,7 @@
                       <div key={index} className={`bg-white rounded-3xl p-8 relative transition-all duration-300 flex flex-col h-full border ${service.color} ${service.recommended ? 'shadow-2xl scale-105 z-10' : 'shadow-sm hover:shadow-xl'}`}>
                         {service.recommended && (
                           <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-6 py-1.5 rounded-full text-sm font-bold shadow-lg tracking-wide">
-                            最多學員選擇
+                            熱門推薦
                           </div>
                         )}
                         
@@ -659,19 +723,26 @@
                           </span>
                         </div>
 
-                        <h3 className="text-xl font-bold text-slate-900 mb-2 font-serif">{service.title}</h3>
-                        <div className="flex items-baseline mb-4">
-                          <span className="text-4xl font-bold text-slate-900">{service.price}</span>
+                        <div className="flex items-center justify-between mb-4">
+                           {service.icon}
                         </div>
-                        <div className="flex items-center text-slate-500 text-sm mb-6 pb-6 border-b border-slate-100">
-                          <Icons.Clock size={16} className="mr-2" />
-                          {service.duration}
+
+                        <h3 className="text-xl font-bold text-slate-900 mb-4">{service.title}</h3>
+                        <p className="text-slate-600 text-sm mb-6 leading-relaxed">{service.description}</p>
+
+                        <div className="mb-8 space-y-3 bg-slate-50 p-4 rounded-xl">
+                          {service.options.map((opt, idx) => (
+                            <div key={idx} className="flex justify-between items-center text-sm">
+                              <span className="text-slate-700 font-medium">{opt.name}</span>
+                              <span className="text-purple-700 font-bold">{opt.price}</span>
+                            </div>
+                          ))}
                         </div>
                         
                         <ul className="space-y-4 mb-8 flex-1">
                           {service.features.map((feature, idx) => (
-                            <li key={idx} className="flex items-start text-slate-600">
-                              <Icons.CheckCircle size={18} className="text-green-500 mr-3 mt-0.5 flex-shrink-0" />
+                            <li key={idx} className="flex items-start text-slate-600 text-sm">
+                              <Icons.CheckCircle size={16} className="text-green-500 mr-3 mt-0.5 flex-shrink-0" />
                               <span className="leading-tight">{feature}</span>
                             </li>
                           ))}
@@ -693,24 +764,56 @@
                 </div>
               </section>
 
-              {/* Online Courses Section (NEW) */}
-              <section id="courses" className="py-24 bg-slate-900 text-white">
+              {/* Shop Section */}
+              <section id="shop" className="py-24 bg-slate-50">
                 <div className="container mx-auto px-6">
                   <div className="text-center max-w-2xl mx-auto mb-16">
-                    <span className="text-purple-400 font-bold tracking-wider uppercase text-sm mb-2 block flex justify-center items-center gap-2">
-                        <Icons.GraduationCap size={18} /> Self-Paced Learning
-                    </span>
-                    <h2 className="text-3xl md:text-4xl font-bold mb-4 font-serif">自主學習｜線上課程學院</h2>
-                    <p className="text-slate-400">如果不方便諮詢，也可以透過系統化課程，自己掌握命運的鑰匙。</p>
+                    <span className="text-purple-600 font-bold tracking-wider uppercase text-sm mb-2 block">Energy Shop</span>
+                    <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">能量開運好物</h2>
+                    <p className="text-slate-600">精選能量載體，輔助調整環境磁場與個人頻率。</p>
                   </div>
 
-                  <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                  <div className="grid md:grid-cols-4 gap-6">
+                    {products.map((product, index) => (
+                      <div key={index} className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 text-center border border-slate-100 group">
+                        <div className="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                          {product.icon}
+                        </div>
+                        <h3 className="font-bold text-lg text-slate-900 mb-2">{product.name}</h3>
+                        <p className="text-xs text-slate-500 mb-4 h-10 line-clamp-2">{product.desc}</p>
+                        <div className="text-purple-600 font-bold text-sm mb-4">{product.price}</div>
+                        <a href="#contact" className="inline-flex items-center justify-center w-full py-2 bg-slate-900 text-white text-xs font-bold rounded-lg hover:bg-purple-600 transition-colors">
+                          <Icons.ShoppingBag size={14} className="mr-1" /> 詢問購買
+                        </a>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </section>
+
+              {/* Online Courses Section */}
+              <section id="courses" className="py-24 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white relative overflow-hidden">
+                <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+                   <div className="absolute top-[-20%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-purple-600/20 blur-[120px] animate-pulse"></div>
+                   <div className="absolute bottom-[-20%] right-[-10%] w-[50vw] h-[50vw] rounded-full bg-indigo-600/20 blur-[120px] animate-pulse delay-1000"></div>
+                </div>
+
+                <div className="container mx-auto px-6 relative z-10">
+                  <div className="text-center max-w-2xl mx-auto mb-16">
+                    <span className="text-purple-300 font-bold tracking-wider uppercase text-sm mb-2 block flex justify-center items-center gap-2">
+                      <Icons.GraduationCap size={18} /> Self-Paced Learning
+                    </span>
+                    <h2 className="text-3xl md:text-4xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-white to-purple-200">自主學習｜線上課程學院</h2>
+                    <p className="text-slate-300">如果不方便諮詢，也可以透過系統化課程，自己掌握命運的鑰匙。</p>
+                  </div>
+
+                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {courses.map((course, index) => (
-                      <div key={index} className="bg-slate-800 rounded-2xl p-6 border border-slate-700 hover:border-purple-500 hover:shadow-lg hover:shadow-purple-500/20 transition-all duration-300 flex flex-col group">
-                        <div className="w-14 h-14 bg-slate-700 rounded-xl flex items-center justify-center mb-6 text-yellow-300 group-hover:scale-110 transition-transform duration-300 shadow-inner border border-white/10">
+                      <div key={index} className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 hover:bg-white/20 hover:shadow-2xl hover:shadow-purple-500/30 hover:-translate-y-1 transition-all duration-300 flex flex-col group">
+                        <div className="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center mb-6 text-yellow-300 group-hover:scale-110 transition-transform duration-300 shadow-inner border border-white/10">
                           {course.icon}
                         </div>
-                        <h3 className="text-xl font-bold mb-3 text-white group-hover:text-purple-200 transition-colors font-serif">{course.title}</h3>
+                        <h3 className="text-xl font-bold mb-3 text-white group-hover:text-purple-200 transition-colors">{course.title}</h3>
                         <p className="text-slate-300 text-sm mb-6 flex-grow leading-relaxed">{course.description}</p>
                         <div className="mt-auto pt-4 border-t border-white/10">
                           <div className="text-2xl font-bold text-yellow-300 mb-4">{course.price}</div>
@@ -728,7 +831,7 @@
               <section id="testimonials" className="py-24 bg-slate-50">
                 <div className="container mx-auto px-6">
                   <div className="text-center mb-16">
-                    <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4 font-serif">來自真實靈魂的聲音</h2>
+                    <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">來自真實靈魂的聲音</h2>
                     <p className="text-slate-600">他們選擇面對真實，找回了人生的主導權。</p>
                   </div>
                   
@@ -736,7 +839,7 @@
                     {testimonials.map((item, index) => (
                       <div key={index} className="bg-white p-8 rounded-2xl border border-slate-100 hover:border-purple-200 hover:shadow-md transition-all duration-300 flex flex-col">
                         <div className="mb-4">
-                          {[...Array(5)].map((_, i) => <Icons.Star key={i} size={16} className="text-yellow-400 inline-block mr-1" fill="currentColor" />)}
+                          {[...Array(5)].map((_, i) => <Icons.Star key={i} size={16} className="text-yellow-400 inline-block mr-1 fill-current" />)}
                         </div>
                         <Icons.Quote className="text-purple-200 mb-4 flex-shrink-0" size={32} />
                         <p className="text-slate-700 text-base leading-relaxed mb-6 flex-grow italic">"{item.text}"</p>
@@ -757,7 +860,7 @@
                 <div className="container mx-auto px-6 text-center relative z-10">
                   <Icons.Sparkles className="text-purple-400 w-10 h-10 mx-auto mb-6 animate-pulse" />
                   
-                  <h2 className="text-3xl md:text-5xl font-bold mb-6 font-serif">準備好開始你的能量旅程了嗎？</h2>
+                  <h2 className="text-3xl md:text-5xl font-bold mb-6">準備好開始你的能量旅程了嗎？</h2>
                   <p className="text-slate-300 text-lg max-w-2xl mx-auto mb-12">
                     你與理想生活的距離，只差一次精準的校準。<br/>
                     每月開放名額有限，請掃描 QR Code 優先卡位。
