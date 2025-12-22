@@ -25,12 +25,10 @@
             100% { transform: translate(0px, 0px) scale(1); }
         }
         .animate-blob { animation: blob 7s infinite; }
-        .animation-delay-2000 { animation-delay: 2s; }
-        .animation-delay-4000 { animation-delay: 4s; }
-        
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         .animate-fade-in-up { animation: fadeInUp 0.8s ease-out forwards; }
         .animate-fadeIn { animation: fadeIn 0.5s ease-out forwards; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body class="bg-slate-50">
@@ -47,7 +45,7 @@
             </svg>
         );
 
-        // --- 完整圖示集 (已包含 ShoppingBag, Tag, Smile 等) ---
+        // --- 完整圖示集 (包含 ShoppingBag, Tag, Smile, Activity, Gem 等) ---
         const Icons = {
             Youtube: (p) => <Icon d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z M9.75 15.02l5.75-3.27-5.75-3.27z" {...p} />,
             Instagram: (p) => <Icon d={["M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z", "M17.5 6.5h.01", "M16 2H8a4 4 0 0 0-4 4v8a4 4 0 0 0 4 4h8a4 4 0 0 0 4-4V6a4 4 0 0 0-4-4z"]} {...p} />,
@@ -392,6 +390,7 @@
               {/* Navigation */}
               <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white/90 backdrop-blur-md shadow-sm py-4' : 'bg-transparent py-6'}`}>
                 <div className="container mx-auto px-6 flex justify-between items-center">
+                  {/* Added Link to Github Page */}
                   <a href="https://aurorakrystal.github.io/" className="text-2xl font-bold tracking-tighter flex items-center gap-2">
                     <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-indigo-500 font-serif">
                       Aurora Krystal
@@ -563,13 +562,13 @@
                       <div className="space-y-8 text-slate-600 leading-loose text-xl">
                         <div>
                           <h4 className="text-2xl font-bold text-slate-900 mb-3 flex items-center gap-2 font-serif">
-                            <Icons.Target className="text-purple-600" size={24} /> 我的背景
+                            <Icons.Brain className="text-purple-600" size={24} /> 我的背景
                           </h4>
                           <p>
-                            我是小歐，擁有<strong>台灣醫學工程博士學位</strong>，專攻大腦訊號處理 (EEG)。在本業醫療器材研發的嚴謹訓練下，我習慣用數據與邏輯來解析世界。
+                            我是小歐，擁有<strong>醫學工程背景</strong>，專攻大腦訊號處理 (EEG)。在本業醫療器材研發的嚴謹訓練下，我習慣用數據與邏輯來解析世界。
                           </p>
-                          <p>
-                            許多人問我，為什麼博士要算命？因為我發現，從微觀的腦波訊號到宏觀的紫微命盤，兩者殊途同歸，都是能量的展現。
+                          <p className="mt-4">
+                            許多人問我，為什麼要算命？因為我發現，從微觀的腦波訊號到宏觀的紫微命盤，兩者殊途同歸，都是能量的展現。
                             我也曾是那個在體制內迷航的社畜，為了擺脫焦慮，我瘋狂跨界、什麼都學。但在無數個朝九晚五的輪迴中，我才驚覺：如果內在頻率沒有對齊，再多的盲目努力都只是原地打轉的空殼。
                           </p>
                         </div>
@@ -579,13 +578,16 @@
                             <Icons.Heart className="text-purple-600" size={24} /> 我的初衷
                           </h4>
                           <p>
-                            其實，我也是一個普通人，一步步成長上來，大家的苦我都吃過。以前家境不好，爸媽是做市場生意的普通人，以前算命的和我爸媽說我念書沒用，能去做鐵工廠就好，中年小心傾家蕩產。除了事業被看衰，我的感情之路也曾跌跌撞撞，不斷碰壁，總是遇到不適合的人互相折磨。但這些恐嚇與挫折，反而激起了我不服輸的鬥志。我不信宿命。我拼命掙扎、修飾性情、改變行為。
+                            其實，我也是一個普通人。家裡做市場生意，以前算命的說我「讀書沒用，能去做鐵工廠就好，中年小心妻離子散、傾家蕩產」。
                           </p>
                           <p className="mt-4">
-                            在家族幾乎無人擁有高學歷、無權無勢的背景下，當時的我也30幾歲了，沒有工作沒有收入，當時也應驗了算命說我一事無成，感情也走向破裂...在極度絕望下、沒人看好我，我以意志力和方法逆風翻盤，也狠狠打臉了當初不看好我的預言，同時也開啟了下一階段的人生。
+                            30歲那年，預言好像真的應驗了：被教授刁難畢不了業、沒工作沒錢、妻女也離開我。那是人生最絕望的谷底。
                           </p>
                           <p className="mt-4">
-                            因此，創立小歐的能量筆記，希望能用我的曾經不美好的經歷、踩坑的經驗，幫助同樣迷茫的你/妳。我將以科學的思維，為你拆解命運的黑盒子，讓你不再被宿命論和恐懼綁架，而是理智地改寫自己的人生劇本。
+                            但我偏不信邪！我拼命改個性、修行為，最後硬是拿到了博士學位，狠狠打臉了當初的爛預言。
+                          </p>
+                          <p className="mt-4">
+                            所以我創立<strong>小歐的能量筆記</strong>，就是想用我踩過的坑和科學思維，幫同樣迷茫的你。我來幫你拆解命運，別讓那些恐嚇綁架你，我們理智地把劇本改寫過來！
                           </p>
                         </div>
                       </div>
@@ -860,7 +862,7 @@
                   <h2 className="text-3xl md:text-5xl font-bold mb-6 font-serif">準備好開始你的能量旅程了嗎？</h2>
                   <p className="text-slate-300 text-lg max-w-2xl mx-auto mb-12">
                     你與理想生活的距離，只差一次精準的校準。<br/>
-                    每月開放名額有限，請掃描 QR Code 優先卡位。
+                    每月開放諮詢名額有限，請掃描 QR Code 優先卡位。
                   </p>
                   
                   <div className="flex flex-col md:flex-row items-center justify-center gap-12">
