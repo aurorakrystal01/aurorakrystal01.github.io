@@ -47,7 +47,7 @@
             </svg>
         );
 
-        // --- 完整圖示集 (包含所有新舊圖示) ---
+        // --- 完整圖示集 (已包含 ShoppingBag, Tag, Smile 等) ---
         const Icons = {
             Youtube: (p) => <Icon d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z M9.75 15.02l5.75-3.27-5.75-3.27z" {...p} />,
             Instagram: (p) => <Icon d={["M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z", "M17.5 6.5h.01", "M16 2H8a4 4 0 0 0-4 4v8a4 4 0 0 0 4 4h8a4 4 0 0 0 4-4V6a4 4 0 0 0-4-4z"]} {...p} />,
@@ -79,14 +79,14 @@
             Lightbulb: (p) => <Icon d={["M15 14c.2-1 .7-1.7 1.5-2.5 1-1 .9-2.6-.2-3.5a2.49 2.49 0 0 0-3.5 0c-1 1-1.1 2.6-.2 3.5.8.8 1.3 1.5 1.5 2.5", "M9 18h6", "M10 22h4"]} {...p} />,
             Heart: (p) => <Icon d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" fill="currentColor" {...p} />,
             Compass: (p) => <Icon d={["M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z", "M16.24 7.76l-2.12 6.36-6.36 2.12 2.12-6.36 6.36-2.12z"]} {...p} />,
-            Gem: (p) => <Icon d="M6 3h12l4 6-10 13L2 9Z" {...p} />,
-            Smile: (p) => <Icon d={["M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z", "M8 14s1.5 2 4 2 4-2 4-2", "M9 9h.01", "M15 9h.01"]} {...p} />,
             GraduationCap: (p) => <Icon d={["M22 10v6M2 10l10-5 10 5-10 5z", "M6 12v5c3.33 2 6.67 2 10 0v-5"]} {...p} />,
             Video: (p) => <Icon d={["M23 7l-7 5 7 5V7z", "M14 5H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2z"]} {...p} />,
             ArrowUpRight: (p) => <Icon d="M7 17l9.2-9.2M17 17V7H7" {...p} />,
             ShoppingBag: (p) => <Icon d={["M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z", "M3 6h18", "M16 10a4 4 0 0 1-8 0"]} {...p} />,
             Tag: (p) => <Icon d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82zM7 7h.01" {...p} />,
-            Activity: (p) => <Icon d="M22 12h-4l-3 9L9 3l-3 9H2" {...p} />
+            Activity: (p) => <Icon d="M22 12h-4l-3 9L9 3l-3 9H2" {...p} />,
+            Gem: (p) => <Icon d="M6 3h12l4 6-10 13L2 9Z" {...p} />,
+            Smile: (p) => <Icon d={["M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z", "M8 14s1.5 2 4 2 4-2 4-2", "M9 9h.01", "M15 9h.01"]} {...p} />
         };
 
         const App = () => {
@@ -137,12 +137,14 @@
             { name: '學員見證', href: '#testimonials' }, 
           ];
 
+          // Stats Data
           const stats = [
             { number: "Logic", label: "科學邏輯思維", icon: <Icons.Brain size={24} className="text-purple-600" /> },
             { number: "10+", label: "年腦科學研究", icon: <Icons.BookOpen size={24} className="text-indigo-600" /> },
             { number: "1000+", label: "諮詢個案經驗", icon: <Icons.Users size={24} className="text-pink-600" /> },
           ];
 
+          // Value/How I Help Data
           const valueProps = [
             {
               title: '搞懂你的人生說明書',
@@ -301,39 +303,39 @@
 
           const courses = [
             {
-              title: "紫微斗數實戰班",
+              title: "紫微斗數全方位實戰班",
               price: "NT$ 12,888",
-              description: "從零教到會解盤。不用死背口訣，用邏輯看懂星星，自己掌握人生說明書。",
+              description: "從零基礎到能獨立解盤。不背口訣，用邏輯理解星曜，掌握自己的人生說明書。",
               icon: <Icons.Star className="w-6 h-6 text-yellow-300" />
             },
             {
-              title: "科學風水佈局班",
+              title: "科學風水環境佈局班",
               price: "NT$ 9,888",
-              description: "教你看不見的環境心理學。調整家裡擺設，打造旺財又旺丁的好磁場。",
+              description: "結合環境心理學與巒頭理氣。教你如何運用現有格局，打造旺財旺丁的能量磁場。",
               icon: <Icons.Compass className="w-6 h-6 text-teal-300" />
             },
             {
-              title: "姓名學與能量鑑定",
+              title: "姓名學與能量鑑定班",
               price: "NT$ 8,888",
-              description: "名字是隨身咒語。學會解析文字頻率，自己幫自己和孩子挑加分好名。",
+              description: "名字是隨身攜帶的咒語。解析文字頻率與五行生剋，為自己與孩子挑選加分好名。",
               icon: <Icons.Target className="w-6 h-6 text-pink-300" />
             },
             {
-              title: "紫微牌卡直覺占卜",
+              title: "紫微牌卡直覺占卜班",
               price: "NT$ 6,888",
-              description: "不用生辰八字，結合圖像直覺。隨時隨地都能快速連結潛意識指引。",
+              description: "結合紫微底蘊與圖像直覺。無需生辰八字，隨時隨地快速決策，連結潛意識指引。",
               icon: <Icons.Sparkles className="w-6 h-6 text-purple-300" />
             },
             {
-              title: "潛意識重塑情緒課",
+              title: "潛意識重塑與情緒管理班",
               price: "NT$ 3,888",
-              description: "告別精神內耗。結合腦科學，教你識別情緒地雷，重塑大腦迴路，找回平靜。",
+              description: "告別精神內耗。結合腦科學與冥想，教你識別情緒訊號，重塑潛意識迴路，找回內在的平靜與力量。",
               icon: <Icons.Smile className="w-6 h-6 text-blue-300" />
             },
             {
-              title: "五行能量水晶配置",
+              title: "五行能量水晶配置班",
               price: "NT$ 2,888",
-              description: "看懂紫微八字缺什麼。教你精準挑選適合的水晶，補足先天磁場不足。",
+              description: "結合紫微與八字命盤分析，教你精準挑選並配戴缺少的五行能量（金木水火土），補足先天磁場。",
               icon: <Icons.Gem className="w-6 h-6 text-cyan-300" />
             }
           ];
@@ -404,7 +406,7 @@
                       </a>
                     ))}
                     <a href="https://aurorakrystal.github.io/tarot/" target="_blank" rel="noreferrer" className="px-5 py-2 bg-slate-900 text-white rounded-full font-medium hover:bg-purple-600 transition-all flex items-center gap-2 shadow-lg hover:shadow-purple-200">
-                      <Icons.Sparkles size={18} /> 紫靈牌占卜
+                      <Icons.Sparkles size={18} /> "免費"紫微卡牌占卜
                     </a>
                   </div>
 
@@ -422,7 +424,7 @@
                       </a>
                     ))}
                     <a href="https://aurorakrystal.github.io/tarot/" target="_blank" rel="noreferrer" className="w-full text-center py-3 bg-slate-900 text-white rounded-lg font-medium mt-2">
-                      紫靈牌占卜
+                      "免費"紫微卡牌占卜
                     </a>
                   </div>
                 )}
@@ -464,7 +466,6 @@
                     </a>
                   </div>
 
-                  {/* Micro-Interaction: Daily Energy Tip */}
                   <div 
                     className="max-w-md mx-auto bg-white border-2 border-purple-400 rounded-3xl p-6 shadow-[0_10px_40px_-10px_rgba(147,51,234,0.3)] hover:shadow-[0_20px_50px_-10px_rgba(147,51,234,0.5)] transition-all duration-300 cursor-pointer group relative overflow-hidden" 
                     onClick={generateDailyTip}
@@ -859,7 +860,7 @@
                   <h2 className="text-3xl md:text-5xl font-bold mb-6 font-serif">準備好開始你的能量旅程了嗎？</h2>
                   <p className="text-slate-300 text-lg max-w-2xl mx-auto mb-12">
                     你與理想生活的距離，只差一次精準的校準。<br/>
-                    每月開放諮詢名額有限，請掃描 QR Code 優先卡位。
+                    每月開放名額有限，請掃描 QR Code 優先卡位。
                   </p>
                   
                   <div className="flex flex-col md:flex-row items-center justify-center gap-12">
