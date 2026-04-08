@@ -70,7 +70,8 @@
             Moon: (p) => <Icon d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" {...p} />,
             Wind: (p) => <Icon d={["M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"]} {...p} />,
             Feather: (p) => <Icon d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5zM16 8L2 22M17.5 15H9" {...p} />,
-            Coffee: (p) => <Icon d={["M17 8h1a4 4 0 1 1 0 8h-1", "M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z", "M6 2v3", "M10 2v3", "M14 2v3"]} {...p} />
+            Coffee: (p) => <Icon d={["M17 8h1a4 4 0 1 1 0 8h-1", "M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z", "M6 2v3", "M10 2v3", "M14 2v3"]} {...p} />,
+            Phone: (p) => <Icon d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" {...p} />
         };
 
         const App = () => {
@@ -142,7 +143,7 @@
               method: '潛意識與情緒調頻',
               description: (
                 <span>
-                  為什麼總是患得患失？為什麼覺得自己不配擁有好東西？我們一起輕解開潛意識裡的結，把那些<strong>自我懷疑的聲音</strong>溫柔放下。
+                  為什麼總是患得患失？為什麼覺得自己不配擁有好東西？我們一起輕輕解開潛意識裡的結，把那些<strong>自我懷疑的聲音</strong>溫柔放下。
                 </span>
               ),
               icon: <Icons.Wind className="w-8 h-8 text-indigo-500" />,
@@ -195,10 +196,11 @@
 
           const services = [
             {
-              title: "紫微塔羅溫柔快占",
+              title: "紫微塔羅溫柔占卜",
               tag: "安撫當下焦慮",
               description: "面臨抉擇、心裡亂糟糟不知道怎麼辦？結合紫微與塔羅，幫你梳理當下的盲點，給予溫暖指引。",
               options: [
+                { name: "💌 文字占卜 (單一問題)", price: "NT$ 300" },
                 { name: "🎧 語音占卜 (30分鐘)", price: "NT$ 900" }
               ],
               features: [
@@ -281,7 +283,7 @@
               {/* Navigation */}
               <nav className={`fixed w-full z-50 transition-all duration-500 ${scrolled ? 'bg-white/80 backdrop-blur-lg shadow-sm py-4' : 'bg-transparent py-6'}`}>
                 <div className="container mx-auto px-6 flex justify-between items-center">
-                  <a href="https://aurorakrystal01.github.io/" className="text-2xl font-bold tracking-tighter flex items-center gap-2">
+                  <a href="https://aurorakrystal.github.io/" className="text-2xl font-bold tracking-tighter flex items-center gap-2">
                     <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-indigo-500">
                       Aurora Krystal
                     </span>
@@ -400,9 +402,9 @@
                           <h3 className="text-2xl font-bold text-slate-800 mb-1">小歐 (Aurora)</h3>
                           <p className="text-purple-500 font-medium mb-5 text-sm">充滿溫度的靈魂傾聽者</p>
                           <div className="flex flex-wrap justify-center gap-2">
-                            <span className="px-4 py-1.5 bg-slate-50 text-slate-600 rounded-full text-xs font-medium tracking-wide">#醫學工程博士</span>
-                            <span className="px-4 py-1.5 bg-slate-50 text-slate-600 rounded-full text-xs font-medium tracking-wide">#溫柔同理給予支持</span>
-                            <span className="px-4 py-1.5 bg-slate-50 text-slate-600 rounded-full text-xs font-medium tracking-wide">#理性分析停止內耗</span>
+                            <span className="px-4 py-1.5 bg-slate-50 text-slate-600 rounded-full text-xs font-medium tracking-wide">#醫學工程背景</span>
+                            <span className="px-4 py-1.5 bg-slate-50 text-slate-600 rounded-full text-xs font-medium tracking-wide">#溫柔同理</span>
+                            <span className="px-4 py-1.5 bg-slate-50 text-slate-600 rounded-full text-xs font-medium tracking-wide">#停止內耗</span>
                           </div>
                         </div>
                       </div>
@@ -707,6 +709,12 @@
                          </div>
                          Threads 溫柔碎語
                        </a>
+                       <a href="tel:0968777938" className="flex items-center gap-4 text-lg font-bold text-slate-700 hover:text-purple-600 transition-colors group">
+                         <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center shadow-sm group-hover:shadow-md transition-all text-slate-400 group-hover:text-purple-600">
+                           <Icons.Phone size={24} />
+                         </div>
+                         聯繫方式: 0968777938
+                       </a>
                        <a href="https://aurorakrystal.github.io/" target="_blank" rel="noreferrer" className="flex items-center gap-4 text-lg font-bold text-purple-600 hover:text-purple-700 transition-colors group">
                          <div className="w-14 h-14 bg-purple-100 rounded-2xl flex items-center justify-center shadow-sm group-hover:shadow-md transition-all group-hover:bg-purple-200">
                            <Icons.Sparkles size={24} />
@@ -736,7 +744,7 @@
               <footer className="bg-slate-950 text-slate-500 py-10">
                 <div className="container mx-auto px-6 text-center">
                   <Icons.Heart size={20} className="mx-auto mb-4 text-slate-700" />
-                  <p className="text-sm tracking-wide">Aurora Krystal 小歐的能量筆記 © {new Date().getFullYear()} All rights reserved.</p>
+                  <p className="text-sm tracking-wide">Aurora Krystal 小歐的能量筆記 © 2026 All rights reserved. 聯繫方式: 0968777938</p>
                 </div>
               </footer>
             </div>
